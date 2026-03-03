@@ -1,0 +1,124 @@
+############################################
+# General junk
+############################################
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+############################################
+# Environment / secrets
+############################################
+.env
+.env.*
+!.env.example
+
+############################################
+# Local tooling & scripts
+############################################
+scripts/
+tools/
+bin/
+tmp/
+temp/
+
+############################################
+# Docs / design / misc
+############################################
+docs/
+documentation/
+design/
+figma/
+assets-src/
+mockups/
+
+############################################
+# Tests & coverage (safe unless you run tests in EAS)
+############################################
+__tests__/
+**/*.test.*
+**/*.spec.*
+coverage/
+
+############################################
+# Storybooks / demos
+############################################
+.storybook/
+stories/
+examples/
+playground/
+
+############################################
+# Build outputs (never needed by EAS)
+############################################
+dist/
+build/
+out/
+.web-build/
+
+############################################
+# Node / package manager artifacts
+############################################
+node_modules/
+.npm/
+.pnpm-store/
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+############################################
+# Editor / IDE
+############################################
+.vscode/
+.idea/
+*.swp
+*.swo
+
+############################################
+# CI / local config
+############################################
+.github/
+.gitlab/
+.circleci/
+.husky/
+lint-staged.config.*
+
+############################################
+# Monorepo extras (safe to remove if not used)
+############################################
+packages/*/docs/
+packages/*/examples/
+packages/*/__tests__/
+
+############################################
+# Expo / EAS specific
+############################################
+.expo/
+.expo-shared/
+web-build/
+
+############################################
+# OS / backups
+############################################
+*.bak
+*.tmp
+*.old
+
+############################################
+# Miscellaneous stuff
+############################################
+.docker/
+.git/
+.dockerignore
+.editorconfig
+.pre-commit-config.yaml
+.prettierignore
+.prettierrc.js
+eslint.config.js
+README.node_modules

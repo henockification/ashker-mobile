@@ -1,10 +1,19 @@
 # EAS workflow: create production builds
-# Configure in EAS project settings and run via: yarn build:prod
+# Configure in EAS project settings and run via: pnpm build:prod
 name: Create Production Builds
 jobs:
-  build:
-    name: Production build
+  android_device_production_build:
+    environment: production
+    name: Build Android Device (production)
     type: build
     params:
-      platform: all
+      platform: android
+      profile: production
+
+  ios_device_production_build:
+    environment: production
+    name: Build iOS Device (production)
+    type: build
+    params:
+      platform: ios
       profile: production

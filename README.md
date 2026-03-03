@@ -4,18 +4,18 @@ React Native app with Expo and expo-router.
 
 ## Setup
 
-1. Install dependencies: `yarn install`
+1. Install dependencies: `pnpm install`
 2. Add app icons in `assets/app/` (see `assets/app/README.md`) or adjust `app.json` to use Expo defaults.
-3. Start: `yarn start`
+3. Start: `pnpm start`
 
 ## Scripts
 
-- `yarn start` – Start Expo dev server
-- `yarn web` – Start for web
-- `yarn lint` – Lint and fix
-- `yarn check-types` – TypeScript check
-- `yarn check-circular` – Circular dependency check
-- `yarn build:dev` / `yarn build:stage` / `yarn build:prod` – EAS workflows (requires EAS project)
+- `pnpm start` – Start Expo dev server
+- `pnpm web` – Start for web
+- `pnpm lint` – Lint and fix
+- `pnpm check-types` – TypeScript check
+- `pnpm check-circular` – Circular dependency check
+- `pnpm build:dev` / `pnpm build:stage` / `pnpm build:prod` – EAS workflows (requires EAS project)
 
 ## Structure
 

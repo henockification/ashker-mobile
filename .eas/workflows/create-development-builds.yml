@@ -1,10 +1,27 @@
 # EAS workflow: create development builds
-# Configure in EAS project settings and run via: yarn build:dev
+# Configure in EAS project settings and run via: pnpm build:dev
 name: Create Development Builds
 jobs:
-  build:
-    name: Development build
-    type: build
+  android_device_development_build:
+    environment: development
+    name: Build Android Device (development)
     params:
-      platform: all
+      platform: android
       profile: development
+    type: build
+
+  ios_device_development_build:
+    environment: development
+    name: Build iOS Device (development)
+    params:
+      platform: ios
+      profile: development
+    type: build
+
+  ios_simulator_development_build:
+    environment: development
+    name: Build iOS Simulator (development)
+    params:
+      platform: ios
+      profile: development-simulator
+    type: build

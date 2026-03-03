@@ -1,10 +1,20 @@
 # EAS workflow: create preview builds
-# Configure in EAS project settings and run via: yarn build:stage
+# Configure in EAS project settings and run via: pnpm build:stage
 name: Create Preview Builds
 jobs:
-  build:
-    name: Preview build
-    type: build
+  android_device_development_build:
+    environment: preview
+    name: Build Android Device (preview)
     params:
-      platform: all
+      platform: android
       profile: preview
+    type: build
+
+  ios_device_development_build:
+    environment: preview
+    name: Build iOS Device (preview)
+    params:
+      platform: ios
+      profile: preview
+    type: build
+
