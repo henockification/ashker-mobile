@@ -1,0 +1,10 @@
+# EAS workflow: create preview builds
+# Configure in EAS project settings and run via: yarn build:stage
+name: Create Preview Builds
+jobs:
+  build:
+    name: Preview build
+    type: build
+    params:
+      platform: all
+      profile: preview

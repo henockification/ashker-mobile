@@ -1,0 +1,10 @@
+# EAS workflow: create development builds
+# Configure in EAS project settings and run via: yarn build:dev
+name: Create Development Builds
+jobs:
+  build:
+    name: Development build
+    type: build
+    params:
+      platform: all
+      profile: development

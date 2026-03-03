@@ -1,0 +1,10 @@
+# EAS workflow: create production builds
+# Configure in EAS project settings and run via: yarn build:prod
+name: Create Production Builds
+jobs:
+  build:
+    name: Production build
+    type: build
+    params:
+      platform: all
+      profile: production
