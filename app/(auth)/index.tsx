@@ -1,9 +1,13 @@
-import { View, Text } from 'react-native';
+import { Redirect, Slot, usePathname } from 'expo-router';
 
-export default function AuthIndexScreen() {
-  return (
-    <View className="flex-1 items-center justify-center p-5">
-      <Text className="text-2xl font-bold">Auth</Text>
-    </View>
-  );
+import { ROUTES } from '@/src/constants/routes';
+
+export default function AuthIndex() {
+  const pathname = usePathname();
+
+  if (pathname === '/') {
+    return <Redirect href={ROUTES.signIn} />;
+  }
+
+  return <Slot />;
 }
