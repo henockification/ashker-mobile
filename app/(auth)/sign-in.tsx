@@ -7,6 +7,7 @@ import { AuthLayout } from '@/src/components/layouts/auth';
 import { FormikTextField } from '@/src/components/form/formik-text-field';
 import { Button } from '@/src/components/ui/button';
 import { Text } from '@/src/components/ui/text';
+import { routes } from '@/src/constants/routes';
 import { handleApiError } from '@/src/utils';
 import Apple from '@/assets/icons/apple.svg';
 import Google from '@/assets/icons/google.svg';
@@ -22,7 +23,7 @@ export default function SignIn() {
     },
     onSubmit: async () => {
       try {
-        router.push('/');
+        router.replace(routes.app.search());
       } catch (e) {
         handleApiError(e, 'Unable to sign in. Please try again.');
         throw new Error('login failed', { cause: e });
@@ -36,7 +37,7 @@ export default function SignIn() {
     <AuthLayout>
       <FormikProvider value={formik}>
         <View style={{ alignItems: 'flex-end', marginBottom: 16 }}>
-          <Pressable onPress={() => router.push('/')}>
+          <Pressable onPress={() => router.replace(routes.app.search())}>
             <Text className="text-base text-primary-600">Skip</Text>
           </Pressable>
         </View>

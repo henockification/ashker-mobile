@@ -3,7 +3,7 @@ import { ExpoConfig } from 'expo/config';
 import packageJson from './package.json';
 
 const packageIdentifier = 'com.projectx.mobileapp';
-const projectId = 'd8e25f85-9421-4ffb-ba25-6190f1a72f76';
+const projectId = '';
 
 const getAppVariant = (): string => {
   switch (process.env.EXPO_PUBLIC_APP_VARIANT) {

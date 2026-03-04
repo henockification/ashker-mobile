@@ -1,16 +1,19 @@
-import { Link } from 'expo-router';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 
-export default function AppIndex() {
+import { MainLayout } from '@/src/components/layouts/main';
+import { Text } from '@/src/components/ui/text';
+
+export default function SearchScreen() {
   return (
-    <View className="flex-1 items-center justify-center p-5">
-      <Text className="text-2xl font-bold">App Home</Text>
-      <Link href="/faq" className="mt-4">
-        <Text className="text-blue-600">FAQ</Text>
-      </Link>
-      <Link href="/contact-support" className="mt-2">
-        <Text className="text-blue-600">Contact Support</Text>
-      </Link>
-    </View>
+    <MainLayout contentLayoutSize="wide" footerShown={false}>
+      <View className="py-8">
+        <Text className="text-xl font-semibold text-neutral-900 mb-2">
+          No recommendations nearby
+        </Text>
+        <Text className="text-base text-neutral-600">
+          Set your location above to explore another location.
+        </Text>
+      </View>
+    </MainLayout>
   );
 }

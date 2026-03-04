@@ -9,6 +9,12 @@ export const ROUTES = {
     signUp: 'sign-up',
     resetPassword: 'reset-password',
     resendEmail: 'resend-email',
+
+    // App tabs (main layout)
+    search: '(app)',
+    projects: '(app)/projects',
+    collections: '(app)/collections',
+    me: '(app)/me',
 } as const;
 
 export type RouteName = (typeof ROUTES)[keyof typeof ROUTES];
@@ -23,5 +29,12 @@ export const routes = {
         signUp: () => `/${ROUTES.signUp}`,
         resetPassword: () => `/${ROUTES.resetPassword}`,
         resendEmail: () => `/${ROUTES.resendEmail}`,
+    },
+
+    app: {
+        search: () => `/${ROUTES.search}` as Href,
+        projects: () => `/${ROUTES.projects}` as Href,
+        collections: () => `/${ROUTES.collections}` as Href,
+        me: () => `/${ROUTES.me}` as Href,
     },
 } as const;
