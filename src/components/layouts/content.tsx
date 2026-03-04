@@ -16,7 +16,7 @@ export const ContentLayout = ({
 }: ContentLayoutProps) => {
   const sizes = {
     narrow: 'md:max-w-[400px] lg:max-w-[500px] px-6 md:px-0',
-    wide: 'max-w-[1180px] px-5',
+    wide: 'max-w-[1140px] px-5',
   };
 
   return (

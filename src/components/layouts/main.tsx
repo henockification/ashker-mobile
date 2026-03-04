@@ -30,7 +30,9 @@ export const MainLayout = ({
           contentInsetAdjustmentBehavior="never"
         >
           {contentLayoutSize === 'full' ? (
-            children
+            <View style={Platform.OS === 'web' ? { maxWidth: 1140, width: '100%', alignSelf: 'center' } : undefined}>
+              {children}
+            </View>
           ) : (
             <ContentLayout className="py-10 flex-1" size={contentLayoutSize}>
               {children}

@@ -1,6 +1,5 @@
 import * as Network from 'expo-network';
 import React, { useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 import { Popup } from './ui/popup';
 
@@ -9,7 +8,6 @@ interface NetworkGuardProps {
 }
 
 export const NetworkGuard = ({ blocking = true }: NetworkGuardProps) => {
-  const { t } = useTranslation();
 
   const [networkState, setNetworkState] = useState<Network.NetworkState | null>(null);
   const [dismissed, setDismissed] = useState(false);
@@ -67,15 +65,15 @@ export const NetworkGuard = ({ blocking = true }: NetworkGuardProps) => {
     <Popup
       isOpen={visible}
       setOpen={setDismissed}
-      title={t('broken_connection_title')}
-      description={t('broken_connection_description')}
+      title="Broken Connection"
+      description="Please check your internet connection and try again."
       actionButtons={[
         {
-          label: t('retry'),
+          label: 'Retry',
           onPress: handleRetry,
         },
         {
-          label: t('close'),
+          label: 'Close',
         },
       ]}
     />

@@ -64,12 +64,6 @@ export const FormikTextField = ({
 
   return (
     <TextField isInvalid={showError}>
-      <TextField.Label
-        className={cn('font-normal', showError ? 'text-danger' : 'text-neutral-600')}
-      >
-        {label}
-      </TextField.Label>
-
       <View className="relative w-full flex-row items-center">
         <TextField.Input
           className={cn(
