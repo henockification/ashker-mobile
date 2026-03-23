@@ -1,11 +1,14 @@
+import { Ionicons } from '@expo/vector-icons';
+import { BottomTabBar } from '@react-navigation/bottom-tabs';
 import { Tabs } from 'expo-router';
-import { View } from 'react-native';
+import { useState } from 'react';
+import { Platform, View } from 'react-native';
 import { useCSSVariable } from 'uniwind';
 
-import SearchIcon from '@/assets/icons/search.svg';
-import NotebookIcon from '@/assets/icons/notebook.svg';
 import FlagIcon from '@/assets/icons/flag.svg';
+import NotebookIcon from '@/assets/icons/notebook.svg';
 import ProfileIcon from '@/assets/icons/profile.svg';
+import { WEB_HEADER_HEIGHT, WebTopBannerMenuTabBar } from '@/src/components/navigation/header';
 
 const primary600 = '#23537c';
 const neutral600 = '#52525b';
@@ -29,33 +32,67 @@ function TabIcon({
 export default function AppLayout() {
   const activeColor = useCSSVariable('--color-primary-600') ?? primary600;
   const inactiveColor = useCSSVariable('--color-neutral-600') ?? neutral600;
+  const isWeb = Platform.OS === 'web' || typeof document !== 'undefined';
+  const [webMenuOpen, setWebMenuOpen] = useState(false);
 
   return (
     <Tabs
+      initialRouteName="index"
+      tabBar={(props) =>
+        isWeb ? (
+          <WebTopBannerMenuTabBar
+            {...props}
+            open={webMenuOpen}
+            onOpenChange={setWebMenuOpen}
+          />
+        ) : (
+          <BottomTabBar {...props} />
+        )
+      }
       screenOptions={{
         headerShown: false,
+        sceneStyle:
+          isWeb
+            ? ({
+                paddingTop: WEB_HEADER_HEIGHT,
+                marginRight: webMenuOpen ? 320 : 0,
+                transitionProperty: 'margin-right',
+                transitionDuration: '220ms',
+                transitionTimingFunction: 'ease',
+              } as any)
+            : undefined,
         tabBarActiveTintColor: typeof activeColor === 'string' ? activeColor : primary600,
         tabBarInactiveTintColor: typeof inactiveColor === 'string' ? inactiveColor : neutral600,
         tabBarLabelStyle: { fontSize: 12, fontWeight: '500' },
-        tabBarStyle: {
-          backgroundColor: '#ffffff',
-          borderTopWidth: 1,
-          borderTopColor: '#e4e4e7',
-          shadowColor: '#18181b',
-          shadowOffset: { width: 0, height: -2 },
-          shadowOpacity: 0.06,
-          shadowRadius: 4,
-          elevation: 8,
-        },
+        tabBarStyle: isWeb
+          ? { display: 'none' }
+          : {
+              backgroundColor: '#ffffff',
+              borderTopWidth: 1,
+              borderTopColor: '#e4e4e7',
+              shadowColor: '#18181b',
+              shadowOffset: { width: 0, height: -2 },
+              shadowOpacity: 0.06,
+              shadowRadius: 4,
+              elevation: 8,
+            },
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Search',
-          tabBarIcon: ({ color }) => <TabIcon Icon={SearchIcon} color={color} />,
+          title: 'Home',
+          tabBarIcon: ({ color, focused }) => (
+            <View style={{ width: 24, height: 24, alignItems: 'center', justifyContent: 'center' }}>
+              <Ionicons name={focused ? 'home' : 'home-outline'} size={22} color={color} />
+            </View>
+          ),
         }}
       />
+      <Tabs.Screen name="feed" options={{ href: null }} />
+      <Tabs.Screen name="search" options={{ href: null }} />
+      <Tabs.Screen name="businesses" options={{ href: null }} />
+      <Tabs.Screen name="businesses/[id]" options={{ href: null }} />
       <Tabs.Screen
         name="projects"
         options={{

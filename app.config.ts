@@ -2,7 +2,7 @@ import { ExpoConfig } from 'expo/config';
 
 import packageJson from './package.json';
 
-const packageIdentifier = 'com.projectx.mobileapp';
+const packageIdentifier = 'com.ashker.review';
 const projectId = '';
 
 const getAppVariant = (): string => {
