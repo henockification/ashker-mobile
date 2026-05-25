@@ -1,5 +1,7 @@
 import { Redirect } from 'expo-router';
 
+import { routes } from '@/src/constants/routes';
+
 export default function Index() {
-  return <Redirect href="/sign-in" />;
+  return <Redirect href={routes.app.home()} />;
 }

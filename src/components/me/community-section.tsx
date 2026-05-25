@@ -12,7 +12,7 @@ export function CommunitySection() {
   return (
     <View className="-mx-5 bg-white">
       <Text className="px-5 pb-2 pt-4 text-base font-bold text-neutral-900">Community</Text>
-      <MeListRow label="Yelp Elite Squad" leading={<YelpEliteMenuIcon />} />
+      <MeListRow label="Elite Squad" leading={<YelpEliteMenuIcon />} />
       <MeListRow
         label="Messages"
         leading={<Ionicons name="chatbubble-ellipses-outline" size={26} color={iconDark} />}

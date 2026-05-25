@@ -62,7 +62,7 @@ const classesStyles: MixedStyleRecord = {
     color: '#ffffff',
   },
   'text-primary': {
-    color: '#23537c',
+    color: '#c62828',
   },
   link: {
     fontFamily: 'NunitoSans-SemiBold',
@@ -91,7 +91,7 @@ const tagsStyles: MixedStyleRecord = {
     width: '100%',
   },
   a: {
-    color: '#23537c',
+    color: '#c62828',
     fontSize: 18,
     lineHeight: 28,
   },

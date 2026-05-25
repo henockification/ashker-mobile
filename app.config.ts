@@ -2,8 +2,8 @@ import { ExpoConfig } from 'expo/config';
 
 import packageJson from './package.json';
 
-const packageIdentifier = 'com.ashker.review';
-const projectId = '';
+const packageIdentifier = 'com.ein1.app';
+const projectId = '55965636-abf7-4c09-9286-defa3ae63492';
 
 const getAppVariant = (): string => {
   switch (process.env.EXPO_PUBLIC_APP_VARIANT) {
@@ -23,7 +23,7 @@ const config: ExpoConfig = {
   android: {
     adaptiveIcon: {
       backgroundColor: '#ffffff',
-      foregroundImage: './assets/app/adaptive-icon.png',
+      foregroundImage: './assets/app/icon.png',
     },
     edgeToEdgeEnabled: true,
     package: packageIdentifier,
@@ -43,18 +43,30 @@ const config: ExpoConfig = {
     },
     supportsTablet: true,
   },
-  name: `Project X${getAppVariant()}`,
+  name: `ein1${getAppVariant()}`,
   newArchEnabled: true,
   orientation: 'portrait',
-  owner: 'project-x',
-  plugins: ['expo-localization', 'expo-notifications', 'expo-router', 'expo-secure-store'],
-  runtimeVersion: {
-    policy: 'appVersion',
-  },
-  scheme: 'project-x',
-  slug: packageJson.name,
+  owner: 'ein1',
+  plugins: [
+    'expo-localization',
+    'expo-notifications',
+    'expo-router',
+    'expo-secure-store',
+    [
+      'expo-image-picker',
+      {
+        photosPermission:
+          'Allow Ein1 to access your photos so you can add them to businesses.',
+        cameraPermission:
+          'Allow Ein1 to access your camera so you can take photos and videos.',
+      },
+    ],
+  ],
+  runtimeVersion: packageJson.version,
+  scheme: 'ein1',
+  slug: 'ein1',
   splash: {
-    backgroundColor: '#163550',
+    backgroundColor: '#7d1c1c',
     image: './assets/app/splash-icon.png',
   },
   updates: {

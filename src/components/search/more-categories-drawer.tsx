@@ -1,5 +1,6 @@
-import { useCallback } from 'react';
+import { useMemo } from 'react';
 import {
+  ActivityIndicator,
   Modal,
   Pressable,
   ScrollView,
@@ -9,74 +10,49 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import AltArrowLeft from '@/assets/icons/alt-arrow-left.svg';
 import ChevronRight from '@/assets/icons/chevron-right.svg';
-import ChefHat from '@/assets/icons/chef-hat.svg';
-import Checklist from '@/assets/icons/checklist.svg';
-import Tuning from '@/assets/icons/tuning.svg';
-import WineGlass from '@/assets/icons/wine-glass.svg';
 
 import { Text } from '@/src/components/ui/text';
-
-export type CategoryItem = { id: string; name: string; showChevron?: boolean };
-
-export type CategorySection = { title: string; items: CategoryItem[] };
-
-const SECTION_ICON_MAP: Record<string, React.ComponentType<{ width?: number; height?: number; stroke?: string; fill?: string }>> = {
-  default: Checklist,
-  Restaurants: ChefHat,
-  'Coffee & Tea': WineGlass,
-  Bars: WineGlass,
-  Desserts: ChefHat,
-  Accountants: Checklist,
-  Handyman: Tuning,
-  Electricians: Tuning,
-  'Hair Salons': Checklist,
-  Massage: Checklist,
-  'Day Spas': Checklist,
-  'Car Wash': Tuning,
-  'Auto Repair': Tuning,
-  'Gas Stations': Tuning,
-};
-
-const MORE_SECTIONS: CategorySection[] = [
-  {
-    title: 'Popular',
-    items: [
-      { id: 'accountants', name: 'Accountants' },
-      { id: 'handyman', name: 'Handyman' },
-      { id: 'electricians', name: 'Electricians' },
-    ],
-  },
-  {
-    title: 'Snacks & Drinks',
-    items: [
-      { id: 'coffee-tea', name: 'Coffee & Tea' },
-      { id: 'bars', name: 'Bars' },
-      { id: 'desserts', name: 'Desserts' },
-    ],
-  },
-  {
-    title: 'Spas & Salons',
-    items: [
-      { id: 'hair-salons', name: 'Hair Salons' },
-      { id: 'massage', name: 'Massage' },
-      { id: 'day-spas', name: 'Day Spas' },
-    ],
-  },
-  {
-    title: 'Auto Services',
-    items: [
-      { id: 'car-wash', name: 'Car Wash' },
-      { id: 'auto-repair', name: 'Auto Repair' },
-      { id: 'gas-stations', name: 'Gas Stations' },
-    ],
-  },
-  {
-    title: 'All Categories',
-    items: [{ id: 'restaurants', name: 'Restaurants', showChevron: true }],
-  },
-];
+import { useCategories } from '@/src/hooks/use-categories';
+import type { Category, CategorySection } from '@/src/types/categories';
+import { RegistryIcon } from '@/src/utils/iconRegistry';
 
 const iconColor = '#18181b';
+
+function buildCategorySections(categories: Category[] | undefined): CategorySection[] {
+  if (!Array.isArray(categories)) {
+    return [];
+  }
+
+  const active = categories.filter((category) => category.isActive);
+  const parentIdsWithChildren = new Set(
+    active.filter((category) => category.parentCategory).map((category) => category.parentCategory!.id),
+  );
+  const sectionOrder: string[] = [];
+  const sectionsByParentId = new Map<string, CategorySection>();
+
+  for (const category of active) {
+    const parent = category.parentCategory;
+    if (!parent) continue;
+
+    let section = sectionsByParentId.get(parent.id);
+    if (!section) {
+      section = { title: parent.name, items: [] };
+      sectionsByParentId.set(parent.id, section);
+      sectionOrder.push(parent.id);
+    }
+
+    section.items.push({
+      id: category.id,
+      name: category.name,
+      icon: category.icon,
+      showChevron: parentIdsWithChildren.has(category.id),
+    });
+  }
+
+  return sectionOrder
+    .map((parentId) => sectionsByParentId.get(parentId))
+    .filter((section): section is CategorySection => Boolean(section?.items.length));
+}
 
 interface MoreCategoriesDrawerProps {
   visible: boolean;
@@ -85,11 +61,8 @@ interface MoreCategoriesDrawerProps {
 
 export function MoreCategoriesDrawer({ visible, onClose }: MoreCategoriesDrawerProps) {
   const insets = useSafeAreaInsets();
-
-  const SectionIcon = useCallback(({ name }: { name: string }) => {
-    const Icon = SECTION_ICON_MAP[name] ?? SECTION_ICON_MAP.default;
-    return <Icon width={24} height={24} stroke={iconColor} fill={iconColor} />;
-  }, []);
+  const { data: categories = [], isLoading, isError } = useCategories();
+  const sections = useMemo(() => buildCategorySections(categories), [categories]);
 
   return (
     <Modal
@@ -123,30 +96,48 @@ export function MoreCategoriesDrawer({ visible, onClose }: MoreCategoriesDrawerP
           style={{ backgroundColor: '#f4f4f5' }}
           showsVerticalScrollIndicator={false}
         >
-          {MORE_SECTIONS.map((section) => (
-            <View key={section.title} className="px-4 pt-6">
-              <Text className="text-sm font-semibold text-neutral-700 mb-3">
-                {section.title}
-              </Text>
-              <View className="rounded-xl overflow-hidden bg-white border border-neutral-200">
-                {section.items.map((item, index) => (
-                  <Pressable
-                    key={item.id}
-                    className="flex-row items-center px-4 py-3 border-b border-neutral-100 last:border-b-0"
-                    style={index === section.items.length - 1 ? { borderBottomWidth: 0 } : undefined}
-                  >
-                    <View className="w-10 items-center justify-center">
-                      <SectionIcon name={item.name} />
-                    </View>
-                    <Text className="flex-1 text-base text-neutral-900">{item.name}</Text>
-                    {item.showChevron && (
-                      <ChevronRight width={20} height={20} stroke={iconColor} />
-                    )}
-                  </Pressable>
-                ))}
-              </View>
+          {isLoading ? (
+            <View className="items-center justify-center py-16">
+              <ActivityIndicator size="large" color={iconColor} />
             </View>
-          ))}
+          ) : isError ? (
+            <View className="px-4 pt-6">
+              <Text className="text-center text-base text-neutral-600">
+                Could not load categories. Please try again.
+              </Text>
+            </View>
+          ) : sections.length === 0 ? (
+            <View className="px-4 pt-6">
+              <Text className="text-center text-base text-neutral-600">No categories available.</Text>
+            </View>
+          ) : (
+            sections.map((section) => (
+              <View key={section.title} className="px-4 pt-6">
+                <Text className="text-sm font-semibold text-neutral-700 mb-3">
+                  {section.title}
+                </Text>
+                <View className="rounded-xl overflow-hidden bg-white border border-neutral-200">
+                  {section.items.map((item, index) => (
+                    <Pressable
+                      key={item.id}
+                      className="flex-row items-center px-4 py-3 border-b border-neutral-100 last:border-b-0"
+                      style={
+                        index === section.items.length - 1 ? { borderBottomWidth: 0 } : undefined
+                      }
+                    >
+                      <View className="w-10 items-center justify-center">
+                        <RegistryIcon icon={item.icon} color={iconColor} />
+                      </View>
+                      <Text className="flex-1 text-base text-neutral-900">{item.name}</Text>
+                      {item.showChevron ? (
+                        <ChevronRight width={20} height={20} stroke={iconColor} />
+                      ) : null}
+                    </Pressable>
+                  ))}
+                </View>
+              </View>
+            ))
+          )}
         </ScrollView>
       </View>
     </Modal>

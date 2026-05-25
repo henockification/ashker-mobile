@@ -1,22 +1,20 @@
 import { Stack } from 'expo-router';
 
 import { ROUTES } from '@/src/constants/routes';
-
-export const unstable_settings = {
-  initialRouteName: ROUTES.signIn,
-};
+import { Header } from '@/src/components/navigation/header';
 
 export default function AuthLayout() {
   return (
     <Stack
       screenOptions={{
         animation: 'none',
-        headerShown: false,
-        contentStyle: { flex: 1 },
+        header: () => <Header />,
+        contentStyle: { backgroundColor: 'white' },
       }}
     >
       <Stack.Screen name={ROUTES.signIn} />
-      {/* Add Stack.Screen for sign-up, reset-password, resend-email when those routes exist */}
+      <Stack.Screen name={ROUTES.signUp} />
+      {/* Add Stack.Screen for reset-password, resend-email when those routes exist */}
     </Stack>
   );
 }

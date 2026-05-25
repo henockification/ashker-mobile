@@ -1,6 +1,14 @@
 // Utility functions
 import { AxiosError, isAxiosError } from 'axios';
 import { Toast } from 'toastify-react-native';
+import Constants from 'expo-constants';
+import * as Updates from 'expo-updates';
+
+export function getAppVersionString() {
+  const version = Constants.expoConfig?.version;
+  const updateId = Updates.updateId?.slice(0, 8);
+  return updateId ? `v${version} (${updateId})` : `v${version}`;
+}
 
 export const getFirstLetter = (value?: string | null) => value?.trim().charAt(0) ?? '';
 
@@ -15,14 +23,18 @@ export function handleApiError(
     fallbackMessage = 'Something went wrong. Please try again.',
   ) {
     let message = fallbackMessage;
-  
+
     if (isAxiosError(error)) {
-      message =
-        error.response?.data?.message ??
-        error.response?.data?.error ??
-        error.message ??
-        fallbackMessage;
+      if (error.response?.status === 413) {
+        message = 'This file is too large to upload. Try a smaller photo or a shorter video.';
+      } else {
+        message =
+          error.response?.data?.message ??
+          error.response?.data?.error ??
+          error.message ??
+          fallbackMessage;
+      }
     }
-  
+
     Toast.error(message);
   }
