@@ -5,7 +5,6 @@ import { ScrollView, View } from 'react-native';
 import { routes } from '@/src/constants/routes';
 import { Text } from '@/src/components/ui/text';
 import { useCreateBusiness } from '@/src/hooks/use-business';
-import { toCreateBusinessPayload } from '@/src/utils/create-business-payload';
 import { handleApiError } from '@/src/utils';
 
 import { FullScreenModalLayout } from '../layouts/full-screen-modal';
@@ -14,6 +13,7 @@ import {
   type AddBusinessSubmitValues,
 } from './detail-form';
 import { RelationshipForm, type RelationshipValues } from './relationship-form';
+import { toCreateBusinessPayload } from './helpers/business.helpers';
 
 export type BusinessRelationshipRole = RelationshipValues['relationship'];
 
