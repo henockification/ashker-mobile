@@ -11,8 +11,7 @@ import type { Business } from '@/src/types/business';
 const THUMBNAIL_SIZE = 48;
 const ROW_HORIZONTAL_PADDING = 20;
 const THUMBNAIL_GAP = 12;
-const DIVIDER_MARGIN_LEFT =
-  ROW_HORIZONTAL_PADDING + THUMBNAIL_SIZE + THUMBNAIL_GAP;
+const DIVIDER_MARGIN_LEFT = ROW_HORIZONTAL_PADDING + THUMBNAIL_SIZE + THUMBNAIL_GAP;
 
 function formatBusinessAddress(business: Business): string {
   const parts = [business.address, business.city, business.state, business.country].filter(
@@ -68,10 +67,7 @@ function RecentlyViewedRow({
       </Pressable>
 
       {!isLast ? (
-        <View
-          className="mr-5 h-px bg-neutral-200"
-          style={{ marginLeft: DIVIDER_MARGIN_LEFT }}
-        />
+        <View className="mr-5 h-px bg-neutral-200" style={{ marginLeft: DIVIDER_MARGIN_LEFT }} />
       ) : null}
     </View>
   );
@@ -84,9 +80,7 @@ export function RecentlyViewedSection() {
   const businesses = useMemo(
     () =>
       [...(data?.businesses ?? [])]
-        .sort(
-          (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
-        )
+        .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
         .slice(0, RECENTLY_VIEWED_LIMIT),
     [data?.businesses],
   );
@@ -113,7 +107,7 @@ export function RecentlyViewedSection() {
               key={business.id}
               business={business}
               isLast={index === businesses.length - 1}
-              onPress={() => router.push(routes.app.business(business.id))}
+              onPress={() => router.push(routes.home())}
             />
           ))
         : null}

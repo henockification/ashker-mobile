@@ -1,4 +1,4 @@
-# ein1
+# ashker-hub
 
 React Native app with Expo and expo-router.
 

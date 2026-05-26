@@ -99,11 +99,7 @@ export const FullScreenModalLayout = ({
             isIconOnly
             accessibilityRole="button"
             accessibilityLabel={'Close screen'}
-            accessibilityHint={
-              showConfirmOnClose
-                ? 'Close with confirm hint'
-                : 'Close hint'
-            }
+            accessibilityHint={showConfirmOnClose ? 'Close with confirm hint' : 'Close hint'}
           >
             <Close
               fill={variant === 'light' ? surfaceForegroundColor : iconColor}

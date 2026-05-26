@@ -62,9 +62,7 @@ export const toastConfig: Record<ToastType, (props: ToastConfigParams) => React.
                 onPress={() => Toast.hide()}
                 className="bg-transparent border-1 border-neutral-700 native:flex-1 px-7"
               >
-                <Button.Label className="text-neutral-700 font-semibold">
-                  Dismiss
-                </Button.Label>
+                <Button.Label className="text-neutral-700 font-semibold">Dismiss</Button.Label>
               </Button>
             </View>
           );

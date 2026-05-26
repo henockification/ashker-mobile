@@ -8,7 +8,6 @@ interface NetworkGuardProps {
 }
 
 export const NetworkGuard = ({ blocking = true }: NetworkGuardProps) => {
-
   const [networkState, setNetworkState] = useState<Network.NetworkState | null>(null);
   const [dismissed, setDismissed] = useState(false);
 

@@ -1,7 +1,7 @@
+import { Ionicons } from '@expo/vector-icons';
 import { useField } from 'formik';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, TextInput, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 
 import { Text } from '@/src/components/ui/text';
 import { useCategories } from '@/src/hooks/use-categories';
@@ -32,10 +32,11 @@ export function FormikCategoryMultiSelect({
 
   const shouldSearch = debouncedSearch.length > 0;
 
-  const { data: searchResults = [], isLoading, isFetching } = useCategories(
-    { name: debouncedSearch },
-    { enabled: shouldSearch },
-  );
+  const {
+    data: searchResults = [],
+    isLoading,
+    isFetching,
+  } = useCategories({ name: debouncedSearch }, { enabled: shouldSearch });
 
   const showError = Boolean(meta.touched && meta.error);
   const availableCategories = shouldSearch

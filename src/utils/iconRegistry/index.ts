@@ -3,8 +3,8 @@ import React, { type ReactElement } from 'react';
 import { DEFAULT_ICON_KEY, iconRegistry, type IconSlug } from './registry';
 import type { IconComponent, IconProps } from './types';
 
-export type { IconComponent, IconProps } from './types';
 export { DEFAULT_ICON_KEY, iconRegistry, type IconSlug } from './registry';
+export type { IconComponent, IconProps } from './types';
 
 export function normalizeIconSlug(icon?: string | null): IconSlug | null {
   if (!icon?.trim()) {

@@ -1,11 +1,6 @@
 import { apiClient } from '@/src/api/client';
 import { parseAuthResponse } from '@/src/api/parse-auth-response';
-import {
-  ParsedAuthResponse,
-  SignInPayload,
-  SignUpPayload,
-  SignUpResponse,
-} from '@/src/types/auth';
+import { ParsedAuthResponse, SignInPayload, SignUpPayload, SignUpResponse } from '@/src/types/auth';
 
 export const resetPassword = async (payload: SignInPayload) => {
   const { data } = await apiClient.post('auth/reset-password', payload);

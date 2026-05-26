@@ -28,7 +28,9 @@ export function useUploadBusinessMedia() {
   return useMutation<BusinessMedia, AxiosError, UploadBusinessMediaPayload>({
     mutationFn: uploadBusinessMedia,
     onSuccess: (_media, variables) => {
-      queryClient.invalidateQueries({ queryKey: businessMediaKeys.byBusiness(variables.businessId) });
+      queryClient.invalidateQueries({
+        queryKey: businessMediaKeys.byBusiness(variables.businessId),
+      });
       queryClient.invalidateQueries({ queryKey: businessKeys.detail(variables.businessId) });
     },
   });

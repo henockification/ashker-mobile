@@ -29,8 +29,10 @@ interface ReviewSectionProps {
   onSubmit: () => void;
 }
 
-export interface ReviewComposerModalProps
-  extends Omit<ReviewSectionProps, 'reviews' | 'reviewOpen'> {
+export interface ReviewComposerModalProps extends Omit<
+  ReviewSectionProps,
+  'reviews' | 'reviewOpen'
+> {
   visible: boolean;
 }
 
@@ -112,7 +114,11 @@ function ReviewComposer({
       </View>
 
       <ReviewSectionCard title="Your rating" subtitle="How was your overall experience?">
-        <StarPicker value={reviewRating} onChange={onReviewRatingChange} accentColor={accentColor} />
+        <StarPicker
+          value={reviewRating}
+          onChange={onReviewRatingChange}
+          accentColor={accentColor}
+        />
       </ReviewSectionCard>
 
       <ReviewSectionCard

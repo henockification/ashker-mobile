@@ -1,6 +1,7 @@
-import { ImagePickerAsset } from "expo-image-picker";
-import { UploadBusinessMediaFile } from "../types/business-media";
 import * as ImageManipulator from 'expo-image-manipulator';
+import { ImagePickerAsset } from 'expo-image-picker';
+
+import { UploadBusinessMediaFile } from '../types/business-media';
 
 const MAX_IMAGE_DIMENSION = 1920;
 const JPEG_QUALITY = 0.65;
@@ -29,7 +30,7 @@ export function unwrapData<T>(data: T | ApiSuccessResponse<T>): T {
       return envelope.data;
     }
   }
-  
+
   return data as T;
 }
 
@@ -69,14 +70,10 @@ export async function prepareAssetForUpload(
   }
 
   try {
-    const result = await ImageManipulator.manipulateAsync(
-      asset.uri,
-      actions,
-      {
-        compress: JPEG_QUALITY,
-        format: ImageManipulator.SaveFormat.JPEG,
-      },
-    );
+    const result = await ImageManipulator.manipulateAsync(asset.uri, actions, {
+      compress: JPEG_QUALITY,
+      format: ImageManipulator.SaveFormat.JPEG,
+    });
 
     const baseName = asset.fileName?.replace(/\.[^.]+$/, '') ?? `upload-${Date.now()}`;
 

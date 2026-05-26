@@ -1,6 +1,6 @@
+import { Ionicons } from '@expo/vector-icons';
 import { useField } from 'formik';
 import { Pressable, TextInput, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 
 import { Text } from '@/src/components/ui/text';
 
@@ -46,7 +46,9 @@ export function FormikBusinessField({
           onPress={onUseCurrentLocation}
         >
           <Ionicons name="locate-outline" size={14} color="#c62828" />
-          <Text className="ml-1.5 text-xs font-semibold text-primary-700">Use current location</Text>
+          <Text className="ml-1.5 text-xs font-semibold text-primary-700">
+            Use current location
+          </Text>
         </Pressable>
       ) : null}
       {showError ? <Text className="mt-1.5 text-xs text-danger-600">{meta.error}</Text> : null}

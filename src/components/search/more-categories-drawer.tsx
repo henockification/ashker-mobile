@@ -1,16 +1,9 @@
 import { useMemo } from 'react';
-import {
-  ActivityIndicator,
-  Modal,
-  Pressable,
-  ScrollView,
-  View,
-} from 'react-native';
+import { ActivityIndicator, Modal, Pressable, ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import AltArrowLeft from '@/assets/icons/alt-arrow-left.svg';
 import ChevronRight from '@/assets/icons/chevron-right.svg';
-
 import { Text } from '@/src/components/ui/text';
 import { useCategories } from '@/src/hooks/use-categories';
 import type { Category, CategorySection } from '@/src/types/categories';
@@ -25,7 +18,9 @@ function buildCategorySections(categories: Category[] | undefined): CategorySect
 
   const active = categories.filter((category) => category.isActive);
   const parentIdsWithChildren = new Set(
-    active.filter((category) => category.parentCategory).map((category) => category.parentCategory!.id),
+    active
+      .filter((category) => category.parentCategory)
+      .map((category) => category.parentCategory!.id),
   );
   const sectionOrder: string[] = [];
   const sectionsByParentId = new Map<string, CategorySection>();
@@ -76,11 +71,7 @@ export function MoreCategoriesDrawer({ visible, onClose }: MoreCategoriesDrawerP
           className="flex-row items-center border-b border-neutral-200 bg-white px-4 py-3"
           style={{ paddingTop: insets.top + 12, paddingBottom: 12 }}
         >
-          <Pressable
-            onPress={onClose}
-            className="flex-row items-center gap-1 pr-4"
-            hitSlop={12}
-          >
+          <Pressable onPress={onClose} className="flex-row items-center gap-1 pr-4" hitSlop={12}>
             <AltArrowLeft width={24} height={24} fill={iconColor} />
             <Text className="text-base text-neutral-900">Back</Text>
           </Pressable>
@@ -108,14 +99,14 @@ export function MoreCategoriesDrawer({ visible, onClose }: MoreCategoriesDrawerP
             </View>
           ) : sections.length === 0 ? (
             <View className="px-4 pt-6">
-              <Text className="text-center text-base text-neutral-600">No categories available.</Text>
+              <Text className="text-center text-base text-neutral-600">
+                No categories available.
+              </Text>
             </View>
           ) : (
             sections.map((section) => (
               <View key={section.title} className="px-4 pt-6">
-                <Text className="text-sm font-semibold text-neutral-700 mb-3">
-                  {section.title}
-                </Text>
+                <Text className="text-sm font-semibold text-neutral-700 mb-3">{section.title}</Text>
                 <View className="rounded-xl overflow-hidden bg-white border border-neutral-200">
                   {section.items.map((item, index) => (
                     <Pressable

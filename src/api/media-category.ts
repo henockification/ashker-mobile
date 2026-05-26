@@ -3,11 +3,7 @@ import type {
   MediaCategoriesListResult,
   MediaCategory,
 } from '@/src/types/media-category';
-import {
-  type ApiSuccessResponse,
-  defaultPagination,
-  unwrapData,
-} from '@/src/utils/helpers';
+import { type ApiSuccessResponse, defaultPagination, unwrapData } from '@/src/utils/helpers';
 
 import { apiClient } from './client';
 

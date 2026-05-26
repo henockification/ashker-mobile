@@ -3,11 +3,11 @@ import type {
   BusinessDetailResponse,
   BusinessesListResponse,
   BusinessesListResult,
-  CreateBusinessPayload
+  CreateBusinessPayload,
 } from '@/src/types/business';
 
-import { apiClient } from './client';
 import { ApiSuccessResponse, defaultPagination, unwrapData } from '../utils/helpers';
+import { apiClient } from './client';
 
 function unwrapBusinessDetail(data: BusinessDetailResponse | Business): Business {
   if (data && typeof data === 'object' && 'data' in data && !Array.isArray(data.data)) {
@@ -23,9 +23,9 @@ export const createBusiness = async (payload: CreateBusinessPayload): Promise<Bu
 };
 
 export const getBusinesses = async (): Promise<BusinessesListResult> => {
-  const { data } = await apiClient.get<BusinessesListResponse | ApiSuccessResponse<Business[]> | Business[]>(
-    'business',
-  );
+  const { data } = await apiClient.get<
+    BusinessesListResponse | ApiSuccessResponse<Business[]> | Business[]
+  >('business');
 
   if (data && typeof data === 'object' && 'data' in data && 'pagination' in data) {
     const response = data as BusinessesListResponse;

@@ -1,8 +1,7 @@
 import * as Yup from 'yup';
 
 export const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-export const passwordRegex =
-  /^(?=.*\d)(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])\S{8,}$/;
+export const passwordRegex = /^(?=.*\d)(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])\S{8,}$/;
 
 export const signUpValidationSchema = Yup.object({
   name: Yup.string().trim().required('Name is required'),
@@ -27,9 +26,7 @@ export const getAddBusinessValidationSchema = (relationship: BusinessRelationshi
     city: Yup.string().trim().required('City is required'),
     businessName: Yup.string().trim().required('Business name is required'),
     address: Yup.string().trim().required('Address is required'),
-    categoryIds: Yup.array()
-      .of(Yup.string().required())
-      .min(1, 'Select at least one category'),
+    categoryIds: Yup.array().of(Yup.string().required()).min(1, 'Select at least one category'),
     phone:
       relationship === 'employee'
         ? Yup.string().trim().required('Phone number is required')
@@ -44,9 +41,6 @@ export const getAddBusinessValidationSchema = (relationship: BusinessRelationshi
   });
 
 export const signInValidationSchema = Yup.object({
-  email: Yup.string()
-    .trim()
-    .email('Invalid email')
-    .required('Email is required'),
+  email: Yup.string().trim().email('Invalid email').required('Email is required'),
   password: Yup.string().required('Password is required'),
 });

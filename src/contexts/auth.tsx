@@ -11,7 +11,6 @@ import {
 } from 'react';
 import { Toast } from 'toastify-react-native';
 
-import { parseAuthResponse } from '@/src/api/parse-auth-response';
 import { type AuthManager } from '@/src/api/auth-manager';
 import {
   authManager as defaultAuthManager,
@@ -19,17 +18,18 @@ import {
   queryClient,
   registerLogoutHandler,
 } from '@/src/api/client';
+import { parseAuthResponse } from '@/src/api/parse-auth-response';
 import { routes } from '@/src/constants/routes';
 import { useSignIn } from '@/src/hooks/use-sign-in';
 import { useSignUp } from '@/src/hooks/use-sign-up';
 import { useStorageState } from '@/src/hooks/use-storage-state';
 import {
+  ParsedAuthResponse,
   RefreshResponse,
+  SessionData,
   SignInPayload,
   SignInResponse,
   SignUpErrorResponse,
-  ParsedAuthResponse,
-  SessionData,
   SignUpPayload,
   SignUpResponse,
 } from '@/src/types/auth';
@@ -148,13 +148,8 @@ export function SessionProvider({
     setRefreshToken(null);
     setSession(null);
 
-    router.replace(routes.app.home());
-  }, [
-    authManager,
-    setAccessToken,
-    setRefreshToken,
-    setSession,
-  ]);
+    router.replace(routes.home());
+  }, [authManager, setAccessToken, setRefreshToken, setSession]);
 
   useEffect(() => {
     registerLogoutHandler(signOut);
@@ -175,7 +170,7 @@ export function SessionProvider({
 
         queryClient.clear();
 
-        router.replace(routes.app.home());
+        router.replace(routes.home());
       },
 
       onTokensRefreshed: (newAccessToken: string, newRefreshToken: string | null) => {
@@ -216,7 +211,7 @@ export function SessionProvider({
 
         isLoading,
         isAuthenticated,
-        isAuthorized
+        isAuthorized,
       }}
     >
       {children}

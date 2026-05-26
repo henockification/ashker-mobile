@@ -1,18 +1,19 @@
 import { Ionicons } from '@expo/vector-icons';
 import { DrawerActions } from '@react-navigation/native';
-import { router, useNavigation, usePathname } from 'expo-router';
+import { router, useNavigation } from 'expo-router';
 import React from 'react';
 import { Platform, Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useCSSVariable } from 'uniwind';
+
 import ArrowLeft from '@/assets/icons/arrow-left.svg';
+import Hamburger from '@/assets/icons/hamburger.svg';
 import LogoTitle from '@/assets/images/logo.svg';
 import { ContentLayout } from '@/src/components/layouts/content';
-import { defaultHederHeight } from '@/src/constants/ui';
-import Hamburger from '@/assets/icons/hamburger.svg';
 import { routes } from '@/src/constants/routes';
-import { useSession } from '@/src/contexts/auth';
+import { defaultHederHeight } from '@/src/constants/ui';
 import { webActionProps } from '@/src/utils/accessibility';
+
 import { Button } from '../ui/button';
 import { Text } from '../ui/text';
 import { Nav } from './nav';
@@ -32,10 +33,22 @@ function HeaderMeActions({ iconColor }: { iconColor: string }) {
       >
         <Ionicons name="notifications-off-outline" size={22} color={iconColor} accessible={false} />
       </Button>
-      <Button variant="ghost" size="md" isIconOnly className="p-2" accessibilityLabel="Share profile">
+      <Button
+        variant="ghost"
+        size="md"
+        isIconOnly
+        className="p-2"
+        accessibilityLabel="Share profile"
+      >
         <Ionicons name="share-outline" size={22} color={iconColor} accessible={false} />
       </Button>
-      <Button variant="ghost" size="md" isIconOnly className="p-2" accessibilityLabel="Profile QR code">
+      <Button
+        variant="ghost"
+        size="md"
+        isIconOnly
+        className="p-2"
+        accessibilityLabel="Profile QR code"
+      >
         <Ionicons name="qr-code-outline" size={22} color={iconColor} accessible={false} />
       </Button>
     </View>
@@ -69,17 +82,14 @@ interface HeaderProps {
 }
 
 export const Header = ({ showBackButton = false, showNav = true, title = '' }: HeaderProps) => {
-  const pathname = usePathname();
   const nav = useNavigation();
   const insets = useSafeAreaInsets();
-  const { isAuthenticated, isLoading } = useSession();
   const iconColor = String(useCSSVariable('--color-white'));
 
-  const showMeActions =
-    !isLoading && isAuthenticated && (pathname === routes.app.me() || pathname.endsWith('/me'));
+  const showMeActions = false;
 
   const goBack = () => router.back();
-  const goToHome = () => router.push(routes.app.home());
+  const goToHome = () => router.push(routes.home());
   const openDrawer = () => {
     nav.dispatch(DrawerActions.openDrawer());
   };

@@ -9,8 +9,8 @@ import { FormikCategoryMultiSelect } from '@/src/components/form/formik-category
 import { Button } from '@/src/components/ui/button';
 import { Text } from '@/src/components/ui/text';
 import {
-  getAddBusinessValidationSchema,
   type BusinessRelationshipRole,
+  getAddBusinessValidationSchema,
 } from '@/src/constants/validation';
 
 export type AddBusinessFormValues = {
@@ -259,11 +259,7 @@ export function AddBusinessLocationFields({
           ) : null}
           <FormikCategoryMultiSelect name="categoryIds" label="Categories" />
           {isEmployee ? (
-            <FormikBusinessField
-              name="phone"
-              label="Phone number"
-              placeholder="+1 555 000 1234"
-            />
+            <FormikBusinessField name="phone" label="Phone number" placeholder="+1 555 000 1234" />
           ) : null}
         </SectionCard>
 

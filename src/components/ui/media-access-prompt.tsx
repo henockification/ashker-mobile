@@ -67,10 +67,7 @@ export function MediaAccessPrompt({
         </Text>
       </View>
 
-      <View
-        className="gap-3 px-5"
-        style={{ paddingBottom: Math.max(insets.bottom, 16) + 8 }}
-      >
+      <View className="gap-3 px-5" style={{ paddingBottom: Math.max(insets.bottom, 16) + 8 }}>
         <Button
           className="w-full"
           isLoading={isEnablingLibrary}

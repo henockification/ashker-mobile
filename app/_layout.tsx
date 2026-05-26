@@ -1,6 +1,5 @@
 import '../global.css';
 
-import { HeroUINativeConfig, HeroUINativeProvider } from 'heroui-native';
 import {
   NunitoSans_400Regular,
   NunitoSans_500Medium,
@@ -9,21 +8,23 @@ import {
   useFonts,
 } from '@expo-google-fonts/nunito-sans';
 import { QueryClientProvider } from '@tanstack/react-query';
-import WebEngine from '@/src/components/web-engine';
-import { NetworkGuard } from '@/src/components/network-guard';
-import { SessionProvider, useSession } from '@/src/contexts/auth';
-import { UserProvider } from '@/src/contexts/user';
+import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { HeroUINativeConfig, HeroUINativeProvider } from 'heroui-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import ToastManager from 'toastify-react-native/components/ToastManager';
+
 import { authManager, queryClient } from '@/src/api/client';
+import { NetworkGuard } from '@/src/components/network-guard';
+import { TenantThemeProvider } from '@/src/components/theme/tenant-theme-provider';
+import WebEngine from '@/src/components/web-engine';
 import { toastConfig } from '@/src/constants/toast';
-import { Header } from '@/src/components/navigation/header';
 import { ROUTES } from '@/src/constants/routes';
-import Drawer from 'expo-router/drawer';
-import { Sidebar } from '@/src/components/navigation/sidebar';
+import { SessionProvider } from '@/src/contexts/auth';
+import { TenantProvider, useTenant } from '@/src/contexts/tenant';
+import { UserProvider } from '@/src/contexts/user';
 
 const config: HeroUINativeConfig = {
   textProps: {
@@ -54,11 +55,9 @@ export default function Layout() {
           <HeroUINativeProvider config={config}>
             <QueryClientProvider client={queryClient}>
               <WebEngine>
-                <SessionProvider authManager={authManager}>
-                  <UserProvider>
-                    <RootNavigator />
-                  </UserProvider>
-                </SessionProvider>
+                <TenantProvider>
+                  <ThemedApp />
+                </TenantProvider>
 
                 <StatusBar style="light" />
                 <ToastManager
@@ -77,43 +76,26 @@ export default function Layout() {
   );
 }
 
-function RootNavigator() {
-  const { session } = useSession();
-  const hasSession = Boolean(session);
+function ThemedApp() {
+  const { themeColor } = useTenant();
 
   return (
-    <Drawer
-      screenOptions={{
-        headerShown: false,
-        drawerPosition: 'right',
-        drawerType: 'back',
-        swipeEnabled: true,
-      }}
-      drawerContent={(props) => <Sidebar {...props} />}
-    >
-      {/* Browse (search, businesses, …) is always available — no sign-in required. */}
-      <Drawer.Screen name="(app)" />
-
-      {/* Auth screens only in the stack while signed out. */}
-      <Drawer.Protected guard={!hasSession}>
-        <Drawer.Screen name="(auth)" />
-      </Drawer.Protected>
-
-      <Drawer.Screen
-        name={ROUTES.faq}
-        options={{
-          headerShown: true,
-          header: () => <Header />,
-        }}
-      />
-
-      <Drawer.Screen
-        name={ROUTES.contactSupport}
-        options={{
-          headerShown: true,
-          header: () => <Header />,
-        }}
-      />
-    </Drawer>
+    <TenantThemeProvider themeColor={themeColor}>
+      <SessionProvider authManager={authManager}>
+        <UserProvider>
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="index" />
+            <Stack.Screen
+              name={ROUTES.signIn}
+              options={{ animation: 'slide_from_right' }}
+            />
+            <Stack.Screen
+              name={ROUTES.signUp}
+              options={{ animation: 'slide_from_right' }}
+            />
+          </Stack>
+        </UserProvider>
+      </SessionProvider>
+    </TenantThemeProvider>
   );
 }

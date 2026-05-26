@@ -7,11 +7,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useCSSVariable } from 'uniwind';
 
 import Close from '@/assets/icons/close.svg';
+import { routes } from '@/src/constants/routes';
 import { useUserContext } from '@/src/contexts/user';
 import { getAppVersionString } from '@/src/utils';
 import { webActionProps } from '@/src/utils/accessibility';
-
-import { routes } from '@/src/constants/routes';
 
 import { sidebarExtraItems, sidebarNavItems } from '../../constants/sidebar';
 import { useSession } from '../../contexts/auth';

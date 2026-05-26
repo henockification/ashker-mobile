@@ -1,31 +1,29 @@
 import { QueryClient } from '@tanstack/react-query';
 import axios, { isAxiosError } from 'axios';
-import { RefreshResponse } from '../types/auth';
+
 import { SKIP_AUTH_RELATIVE_PATHS } from '../constants/api';
+import { getApiBaseUrl, getTenantOrigin } from '../constants/tenant';
 import { ApiSettings } from '../types/api';
+import { RefreshResponse } from '../types/auth';
 import { AuthManager, DefaultAuthManager } from './auth-manager';
 import { tokenStore } from './token-store';
 
 let logoutHandler: (() => void) | null = null;
 
 export const getApiSettings = (): ApiSettings => {
-  const hostname = process.env.EXPO_PUBLIC_RETAIN_HOST_NAME;
+  const apiBaseUrl = getApiBaseUrl();
+  const tenantOrigin = getTenantOrigin();
 
-  switch (hostname) {
-    case '127.0.0.1':
-    case 'localhost':
-      return {
-        apiBaseUrl: 'https://api.ein1.app',
-        homeDomain: 'www.ein1.app',
-      };
-
-    default: {
-      return {
-        apiBaseUrl: 'https://api.ein1.app',
-        homeDomain: 'www.ein1.app',
-      };
+  let homeDomain = 'ashker.events';
+  if (tenantOrigin) {
+    try {
+      homeDomain = new URL(tenantOrigin).host;
+    } catch {
+      // keep default
     }
   }
+
+  return { apiBaseUrl, homeDomain };
 };
 
 const getRelativeApiPath = (url?: string): string | null => {
@@ -75,55 +73,62 @@ export const apiClient = axios.create({
 export const isNetworkError = (error: unknown) => isAxiosError(error) && !error.response;
 
 export const queryClient = new QueryClient({
-    defaultOptions: {
-      mutations: {
-        retry: 0,
-      },
-      queries: {
-        retry: 0,
-        refetchOnWindowFocus: false,
-      },
+  defaultOptions: {
+    mutations: {
+      retry: 0,
     },
-  });
+    queries: {
+      retry: 0,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
-  export const refreshTokens = async (refreshToken: string): Promise<RefreshResponse> => {
-    const { data } = await apiClient.post<RefreshResponse>('auth/refresh', { refreshToken });
-    return data;
-  };
-  
-  export const registerLogoutHandler = (handler: () => void) => {
-    logoutHandler = handler;
-  };
-  
-  apiClient.interceptors.request.use((config) => {
-    if (shouldSkipAuth(config.url)) {
-      return config;
-    }
-  
-    const accessToken = authManager.getAccessToken();
-  
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
-    } else {
-      delete config.headers.Authorization;
-    }
-  
+export const refreshTokens = async (refreshToken: string): Promise<RefreshResponse> => {
+  const { data } = await apiClient.post<RefreshResponse>('auth/refresh', { refreshToken });
+  return data;
+};
+
+export const registerLogoutHandler = (handler: () => void) => {
+  logoutHandler = handler;
+};
+
+apiClient.interceptors.request.use((config) => {
+  const tenantOrigin = getTenantOrigin();
+
+  if (tenantOrigin) {
+    config.headers.Origin = tenantOrigin;
+    config.headers.Referer = tenantOrigin;
+  }
+
+  if (shouldSkipAuth(config.url)) {
     return config;
-  });
-  
-  apiClient.interceptors.response.use(
-    (response) => response,
-    (error) => {
-      const originalRequest = isAxiosError(error) ? error.config : undefined;
-  
-      return authManager.handleUnauthorizedError(
-        apiClient,
-        error,
-        originalRequest,
-        shouldSkipAuth,
-        logoutHandler,
-      );
-    },
-  );
-  
-  export const authManager: AuthManager = new DefaultAuthManager(tokenStore, refreshTokens);
+  }
+
+  const accessToken = authManager.getAccessToken();
+
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
+  } else {
+    delete config.headers.Authorization;
+  }
+
+  return config;
+});
+
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const originalRequest = isAxiosError(error) ? error.config : undefined;
+
+    return authManager.handleUnauthorizedError(
+      apiClient,
+      error,
+      originalRequest,
+      shouldSkipAuth,
+      logoutHandler,
+    );
+  },
+);
+
+export const authManager: AuthManager = new DefaultAuthManager(tokenStore, refreshTokens);

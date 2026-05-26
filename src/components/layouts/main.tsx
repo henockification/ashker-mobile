@@ -1,4 +1,4 @@
-import { Platform, View, ScrollView } from 'react-native';
+import { Platform, ScrollView, View } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 
 import { Footer } from '../navigation/footer';
@@ -30,7 +30,13 @@ export const MainLayout = ({
           contentInsetAdjustmentBehavior="never"
         >
           {contentLayoutSize === 'full' ? (
-            <View style={Platform.OS === 'web' ? { maxWidth: 1140, width: '100%', alignSelf: 'center' } : undefined}>
+            <View
+              style={
+                Platform.OS === 'web'
+                  ? { maxWidth: 1140, width: '100%', alignSelf: 'center' }
+                  : undefined
+              }
+            >
               {children}
             </View>
           ) : (

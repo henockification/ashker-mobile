@@ -3,10 +3,11 @@ import { useCallback } from 'react';
 
 import { useSession } from '@/src/contexts/auth';
 import { useUploadBusinessMedia } from '@/src/hooks/use-business-media';
-import { resolveAuthUserId } from '@/src/utils/auth-user-id';
 import { handleApiError } from '@/src/utils';
-import { useMediaAccessPrompt } from './use-media-access-prompt';
+import { resolveAuthUserId } from '@/src/utils/auth-user-id';
+
 import { prepareAssetForUpload } from '../utils/helpers';
+import { useMediaAccessPrompt } from './use-media-access-prompt';
 
 export function useBusinessMediaUpload(businessId: string | undefined) {
   const { session, accessToken } = useSession();

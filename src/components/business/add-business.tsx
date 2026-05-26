@@ -2,18 +2,15 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
-import { routes } from '@/src/constants/routes';
 import { Text } from '@/src/components/ui/text';
+import { routes } from '@/src/constants/routes';
 import { useCreateBusiness } from '@/src/hooks/use-business';
 import { handleApiError } from '@/src/utils';
 
 import { FullScreenModalLayout } from '../layouts/full-screen-modal';
-import {
-  AddBusinessLocationFields,
-  type AddBusinessSubmitValues,
-} from './detail-form';
-import { RelationshipForm, type RelationshipValues } from './relationship-form';
+import { AddBusinessLocationFields, type AddBusinessSubmitValues } from './detail-form';
 import { toCreateBusinessPayload } from './helpers/business.helpers';
+import { RelationshipForm, type RelationshipValues } from './relationship-form';
 
 export type BusinessRelationshipRole = RelationshipValues['relationship'];
 
@@ -27,7 +24,7 @@ export function AddBusinessScreen() {
     if (isPresented) {
       router.back();
     } else {
-      router.replace(routes.app.home());
+      router.replace(routes.home());
     }
   };
 
@@ -39,7 +36,7 @@ export function AddBusinessScreen() {
   const onAddBusiness = async (values: AddBusinessSubmitValues) => {
     try {
       const business = await createBusiness.mutateAsync(toCreateBusinessPayload(values));
-      router.replace(routes.app.business(business.id));
+      router.replace(routes.home());
     } catch (error) {
       handleApiError(error, 'Unable to add this business. Please try again.');
       throw error;

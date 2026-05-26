@@ -31,9 +31,7 @@ interface FooterColumn {
 const footerColumns: FooterColumn[] = [
   {
     title: 'sitemap',
-    links: [
-      { label: 'tab_today', href: routes.auth.signIn() },
-    ],
+    links: [{ label: 'tab_today', href: routes.auth.signIn() }],
   },
   {
     title: 'legal',
@@ -48,8 +46,8 @@ const footerColumns: FooterColumn[] = [
   {
     title: 'company',
     links: [
-      { label: 'support', href: routes.faq() },
-      { label: 'contact_us', href: routes.contactSupport() },
+      { label: 'support', href: routes.home() },
+      { label: 'contact_us', href: routes.home() },
     ],
   },
 ];

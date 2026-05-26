@@ -2,8 +2,8 @@ import { ExpoConfig } from 'expo/config';
 
 import packageJson from './package.json';
 
-const packageIdentifier = 'com.ein1.app';
-const projectId = '55965636-abf7-4c09-9286-defa3ae63492';
+const packageIdentifier = 'com.ashker-hub.app';
+const projectId = '87bbdf20-136e-4b32-9d63-0de0fca08abe';
 
 const getAppVariant = (): string => {
   switch (process.env.EXPO_PUBLIC_APP_VARIANT) {
@@ -43,10 +43,10 @@ const config: ExpoConfig = {
     },
     supportsTablet: true,
   },
-  name: `ein1${getAppVariant()}`,
+  name: `ashker-hub${getAppVariant()}`,
   newArchEnabled: true,
   orientation: 'portrait',
-  owner: 'ein1',
+  owner: 'ashker-events',
   plugins: [
     'expo-localization',
     'expo-notifications',
@@ -63,10 +63,10 @@ const config: ExpoConfig = {
     ],
   ],
   runtimeVersion: packageJson.version,
-  scheme: 'ein1',
-  slug: 'ein1',
+  scheme: 'ashker-hub',
+  slug: 'ashker-hub',
   splash: {
-    backgroundColor: '#7d1c1c',
+    backgroundColor: '#fafafa',
     image: './assets/app/splash-icon.png',
   },
   updates: {
