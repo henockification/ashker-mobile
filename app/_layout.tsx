@@ -14,14 +14,14 @@ import { HeroUINativeConfig, HeroUINativeProvider } from 'heroui-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import ToastManager from 'toastify-react-native/components/ToastManager';
+import ToastManager from 'toastify-react-native';
 
 import { authManager, queryClient } from '@/src/api/client';
 import { NetworkGuard } from '@/src/components/network-guard';
 import { TenantThemeProvider } from '@/src/components/theme/tenant-theme-provider';
 import WebEngine from '@/src/components/web-engine';
-import { toastConfig } from '@/src/constants/toast';
 import { ROUTES } from '@/src/constants/routes';
+import { toastConfig } from '@/src/constants/toast';
 import { SessionProvider } from '@/src/contexts/auth';
 import { TenantProvider, useTenant } from '@/src/contexts/tenant';
 import { UserProvider } from '@/src/contexts/user';
@@ -85,14 +85,9 @@ function ThemedApp() {
         <UserProvider>
           <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="index" />
-            <Stack.Screen
-              name={ROUTES.signIn}
-              options={{ animation: 'slide_from_right' }}
-            />
-            <Stack.Screen
-              name={ROUTES.signUp}
-              options={{ animation: 'slide_from_right' }}
-            />
+            <Stack.Screen name={ROUTES.signIn} options={{ animation: 'slide_from_right' }} />
+            <Stack.Screen name={ROUTES.signUp} options={{ animation: 'slide_from_right' }} />
+            <Stack.Screen name="events/[eventId]" options={{ animation: 'slide_from_right' }} />
           </Stack>
         </UserProvider>
       </SessionProvider>

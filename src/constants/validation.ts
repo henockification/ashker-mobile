@@ -44,3 +44,7 @@ export const signInValidationSchema = Yup.object({
   email: Yup.string().trim().email('Invalid email').required('Email is required'),
   password: Yup.string().required('Password is required'),
 });
+
+export const guestEmailValidationSchema = Yup.object({
+  email: Yup.string().trim().email('Invalid email').required('Email is required'),
+});

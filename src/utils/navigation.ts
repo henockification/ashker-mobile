@@ -2,12 +2,14 @@ import { router } from 'expo-router';
 
 import { routes } from '@/src/constants/routes';
 
-/** Return to the tenant landing screen from auth screens. */
+/** Return to the tenant landing screen from auth screens (never router.back). */
 export const navigateToHome = (): void => {
-  if (router.canGoBack()) {
-    router.back();
+  const home = routes.home();
+
+  if (router.canDismiss()) {
+    router.dismissTo(home);
     return;
   }
 
-  router.replace(routes.home());
+  router.replace(home);
 };

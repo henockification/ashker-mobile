@@ -48,6 +48,7 @@ import IconPlumber from '@/assets/icons/icon-plumber.svg';
 import InfoCircle from '@/assets/icons/info-circle.svg';
 import Instagram from '@/assets/icons/instagram.svg';
 import Lightbulb from '@/assets/icons/lightbulb.svg';
+import Linkedin from '@/assets/icons/linkedin.svg';
 import Mask from '@/assets/icons/mask.svg';
 import Moon from '@/assets/icons/moon.svg';
 import Notebook from '@/assets/icons/notebook.svg';
@@ -128,6 +129,7 @@ export const iconRegistry = {
   'info-circle': InfoCircle,
   instagram: Instagram,
   lightbulb: Lightbulb,
+  linkedin: Linkedin,
   mask: Mask,
   moon: Moon,
   notebook: Notebook,

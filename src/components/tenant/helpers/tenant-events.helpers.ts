@@ -27,16 +27,12 @@ export const isEventPast = (event: TenantEvent, now: Date = new Date()): boolean
 export const getPublishedEvents = (events: TenantEvent[]): TenantEvent[] =>
   events.filter((event) => event.isPublished);
 
-export const getUpcomingEvents = (
-  events: TenantEvent[],
-  now: Date = new Date(),
-): TenantEvent[] => filterTenantEvents(events, { timeFilter: 'upcoming', now });
+export const getUpcomingEvents = (events: TenantEvent[], now: Date = new Date()): TenantEvent[] =>
+  filterTenantEvents(events, { timeFilter: 'upcoming', now });
 
 export const getEventTypeOptions = (events: TenantEvent[]): string[] => {
   const types = new Set(
-    events
-      .map((event) => event.eventType?.trim())
-      .filter((type): type is string => Boolean(type)),
+    events.map((event) => event.eventType?.trim()).filter((type): type is string => Boolean(type)),
   );
 
   return [...types].sort((a, b) => a.localeCompare(b));
@@ -111,6 +107,19 @@ export const getEventImageUri = (event: TenantEvent): string | null => {
   return event.coverPhoto ?? event.logo ?? null;
 };
 
+export const findTenantEventById = (
+  events: TenantEvent[],
+  eventId: string,
+): TenantEvent | undefined => events.find((event) => event.id === eventId);
+
+export const formatEventTimeRange = (event: TenantEvent): string | null => {
+  if (event.eventStartTime && event.eventEndTime) {
+    return `${event.eventStartTime} – ${event.eventEndTime}`;
+  }
+
+  return event.eventStartTime ?? event.eventEndTime ?? null;
+};
+
 export const getEventStatusLabel = (event: TenantEvent): string | null => {
   if (!event.isPublished) {
     return 'Draft';
@@ -134,10 +143,7 @@ export const getTimeFilterLabel = (filter: EventTimeFilter): string => {
   }
 };
 
-export const getEmptyEventsMessage = (
-  timeFilter: EventTimeFilter,
-  typeFilter: string,
-): string => {
+export const getEmptyEventsMessage = (timeFilter: EventTimeFilter, typeFilter: string): string => {
   if (typeFilter !== 'all') {
     return 'No events match this type for the selected filter.';
   }

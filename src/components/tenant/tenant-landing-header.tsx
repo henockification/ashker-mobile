@@ -22,8 +22,7 @@ export function TenantLandingHeader({
   eventCount,
 }: TenantLandingHeaderProps) {
   const [gradientStart, gradientEnd] = getHeaderGradientColors(accentColor);
-  const eventLabel =
-    eventCount === 1 ? '1 active event' : `${eventCount} active events`;
+  const eventLabel = eventCount === 1 ? '1 active event' : `${eventCount} active events`;
 
   return (
     <View className="overflow-hidden">

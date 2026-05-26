@@ -78,9 +78,7 @@ export const resolveTenantThemeColor = (themeColor: string | null | undefined): 
 export const getFallbackPrimaryPalette = (): PrimaryPalette =>
   buildPrimaryPalette(FALLBACK_PRIMARY_HEX);
 
-export const resolveThemePalette = (
-  themeColor: string | null | undefined,
-): PrimaryPalette => {
+export const resolveThemePalette = (themeColor: string | null | undefined): PrimaryPalette => {
   const resolved = resolveTenantThemeColor(themeColor);
   return buildPrimaryPalette(resolved ?? FALLBACK_PRIMARY_HEX);
 };
@@ -88,8 +86,65 @@ export const resolveThemePalette = (
 export const getHeaderGradientColors = (
   themeColor: string | null | undefined,
 ): [string, string] => {
-  const base = parseHexColor(themeColor) ?? '#52525b';
+  const base = parseHexColor(themeColor) ?? FALLBACK_PRIMARY_HEX;
   const rgb = hexToRgb(base);
 
   return [base, toHex(mix(rgb, { r: 0, g: 0, b: 0 }, 0.28))];
+};
+
+export type EventThemeColors = {
+  primary: string;
+  secondary: string;
+  tertiary: string;
+};
+
+const deriveSecondaryFromPrimary = (primary: string): string => {
+  const rgb = hexToRgb(primary);
+  return toHex(mix(rgb, { r: 255, g: 255, b: 255 }, 0.35));
+};
+
+const deriveTertiaryFromPrimary = (primary: string): string => {
+  const rgb = hexToRgb(primary);
+  return toHex(mix(rgb, { r: 0, g: 0, b: 0 }, 0.22));
+};
+
+/** Event brand colors — falls back through tenant, then derived shades. */
+export const resolveEventTheme = (
+  event: {
+    themeColor: string | null;
+    secondaryColor: string | null;
+    tertiaryColor: string | null;
+  },
+  tenantThemeColor?: string | null,
+): EventThemeColors => {
+  const primary =
+    parseHexColor(event.themeColor) ??
+    parseHexColor(tenantThemeColor) ??
+    FALLBACK_PRIMARY_HEX;
+
+  const secondary =
+    parseHexColor(event.secondaryColor) ?? deriveSecondaryFromPrimary(primary);
+  const tertiary =
+    parseHexColor(event.tertiaryColor) ?? deriveTertiaryFromPrimary(primary);
+
+  return { primary, secondary, tertiary };
+};
+
+export const withAlpha = (hex: string, alphaHex: string): string => {
+  const parsed = parseHexColor(hex);
+  return parsed ? `${parsed}${alphaHex}` : hex;
+};
+
+export const getEventHeroGradientColors = (
+  theme: EventThemeColors,
+): [string, string, string] => {
+  const primaryRgb = hexToRgb(theme.primary);
+  const secondaryRgb = hexToRgb(theme.secondary);
+
+  return [
+    // keep photo visible: mostly transparent at top, darker near bottom for text
+    withAlpha(theme.primary, '22'),
+    withAlpha(toHex(mix(primaryRgb, secondaryRgb, 0.55)), '88'),
+    withAlpha(toHex(mix(secondaryRgb, { r: 0, g: 0, b: 0 }, 0.45)), 'CC'),
+  ];
 };

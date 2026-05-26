@@ -6,6 +6,7 @@ export const ROUTES = {
   signUp: 'sign-up',
   resetPassword: 'reset-password',
   resendEmail: 'resend-email',
+  eventDetail: 'events/[eventId]',
 } as const;
 
 export type RouteName = (typeof ROUTES)[keyof typeof ROUTES];
@@ -19,5 +20,9 @@ export const routes = {
     signUp: () => `/${ROUTES.signUp}` as Href,
     resetPassword: () => `/${ROUTES.resetPassword}` as Href,
     resendEmail: () => `/${ROUTES.resendEmail}` as Href,
+  },
+
+  event: {
+    detail: (eventId: string) => `/events/${eventId}` as Href,
   },
 } as const;

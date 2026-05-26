@@ -1,5 +1,6 @@
 import { Image } from 'expo-image';
-import { View } from 'react-native';
+import { router } from 'expo-router';
+import { Pressable, View } from 'react-native';
 
 import {
   formatEventDateBadge,
@@ -9,28 +10,38 @@ import {
   getEventStatusLabel,
 } from '@/src/components/tenant/helpers/tenant-events.helpers';
 import { Text } from '@/src/components/ui/text';
+import { routes } from '@/src/constants/routes';
 import type { TenantEvent } from '@/src/types/tenant-events';
-import { parseHexColor } from '@/src/utils/theme-palette';
+import { parseHexColor, withAlpha } from '@/src/utils/theme-palette';
 
 type EventCardProps = {
   event: TenantEvent;
   accentColor?: string | null;
+  onPress?: (event: TenantEvent) => void;
 };
 
-const withAlpha = (hex: string, alphaHex: string): string => {
-  const parsed = parseHexColor(hex);
-  return parsed ? `${parsed}${alphaHex}` : hex;
-};
-
-export function EventCard({ event, accentColor }: EventCardProps) {
+export function EventCard({ event, accentColor, onPress }: EventCardProps) {
   const imageUri = getEventImageUri(event);
-  const accent = parseHexColor(accentColor) ?? '#52525b';
+  const accent =
+    parseHexColor(event.themeColor) ?? parseHexColor(accentColor) ?? '#52525b';
   const statusLabel = getEventStatusLabel(event);
   const { month, day } = formatEventDateBadge(event);
 
+  const handlePress = () => {
+    if (onPress) {
+      onPress(event);
+      return;
+    }
+
+    router.push(routes.event.detail(event.id));
+  };
+
   return (
-    <View
-      className="rounded-2xl border border-neutral-200 bg-white p-4"
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`View ${event.eventName}`}
+      onPress={handlePress}
+      className="rounded-2xl border border-neutral-200 bg-white p-4 active:opacity-95"
       style={{
         shadowColor: '#000',
         shadowOpacity: 0.1,
@@ -41,9 +52,16 @@ export function EventCard({ event, accentColor }: EventCardProps) {
     >
       <View className="relative mb-3.5 overflow-hidden rounded-xl bg-neutral-100">
         {imageUri ? (
-          <Image source={{ uri: imageUri }} style={{ width: '100%', height: 156 }} contentFit="cover" />
+          <Image
+            source={{ uri: imageUri }}
+            style={{ width: '100%', height: 156 }}
+            contentFit="cover"
+          />
         ) : (
-          <View className="h-[156px] items-center justify-center" style={{ backgroundColor: withAlpha(accent, '10') }}>
+          <View
+            className="h-[156px] items-center justify-center"
+            style={{ backgroundColor: withAlpha(accent, '10') }}
+          >
             <View
               className="h-12 w-12 rounded-full"
               style={{ backgroundColor: withAlpha(accent, '22') }}
@@ -83,13 +101,15 @@ export function EventCard({ event, accentColor }: EventCardProps) {
         {event.eventName}
       </Text>
 
-      <Text className="mb-1 text-sm font-medium text-neutral-700">{formatEventSchedule(event)}</Text>
+      <Text className="mb-1 text-sm font-medium text-neutral-700">
+        {formatEventSchedule(event)}
+      </Text>
 
       {event.eventLocation ? (
         <Text className="text-sm leading-5 text-neutral-500" numberOfLines={2}>
           {event.eventLocation}
         </Text>
       ) : null}
-    </View>
+    </Pressable>
   );
 }

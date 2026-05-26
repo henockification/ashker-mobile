@@ -35,9 +35,7 @@ function Segment({ label, selected, accentColor, onPress }: SegmentProps) {
       className={cn('flex-1 items-center rounded-lg py-2', selected && 'shadow-sm')}
       style={selected ? { backgroundColor: accent } : undefined}
     >
-      <Text
-        className={cn('text-sm font-semibold', selected ? 'text-white' : 'text-neutral-600')}
-      >
+      <Text className={cn('text-sm font-semibold', selected ? 'text-white' : 'text-neutral-600')}>
         {label}
       </Text>
     </Pressable>
